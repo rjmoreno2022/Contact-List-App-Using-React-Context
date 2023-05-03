@@ -3,6 +3,7 @@ const getState = ({ getStore, setStore }) => {
 		store: {
 			//Your data structures, A.K.A Entities
 			title: "Titulo para hacer una prueba",
+			contId: 0,
 			contacts: []
 		},
 		actions: {
@@ -40,9 +41,11 @@ const getState = ({ getStore, setStore }) => {
 			},
 			newContact: newItem => {
 				let auxStore = getStore();
-				newItem.id = auxStore.contacts.length;
+				setStore({ contId: auxStore.contId + 1 });
+				newItem.id = auxStore.contId;
 				setStore({ contacts: [...auxStore.contacts, newItem] });
-				auxStore = getStore();
+
+				//auxStore = getStore();
 				alert("New Contact added successfully!");
 			},
 			removeContact: target => {
@@ -53,21 +56,12 @@ const getState = ({ getStore, setStore }) => {
 			},
 			editContact: target => {
 				const auxStore = getStore();
-				const contactIndex = auxStore.contacts.findIndex(item => item.id === target.id);
-				auxStore.contacts[contactIndex] = {
-					...auxStore.contacts[contactIndex],
-					fullName: target.fullName,
-					email: target.email,
-					address: target.address,
-					phone: target.phone
-				};
-				setStore({ contacts: auxStore.contacts });
-				// let auxContact = auxStore.contacts.filter(item => item.id == target.id);
-				// auxContact.fullName = target.fullName;
-				// auxContact.email = target.email;
-				// auxContact.address = target.address;
-				// auxContact.phone = target.phone;
-				// console.log(auxStore.contacts);
+				let auxContact = auxStore.contacts.find(item => item.id == target.id);
+				auxContact.fullName = target.fullName;
+				auxContact.email = target.email;
+				auxContact.address = target.address;
+				auxContact.phone = target.phone;
+				console.log(auxStore.contacts);
 				alert("Contact edited successfully!");
 			}
 		}
